@@ -40,10 +40,16 @@ class SimpleUserSerializer(serializers.ModelSerializer):
 
 
 class TaskCreateSerializer(serializers.ModelSerializer):
-
+    # is_done = serializers.BooleanField(read_only=True)
     class Meta:
         model = Task
-        fields = ['name', 'description', 'user']
+        fields = ['name', 'description', 'is_done']
+    
+    
+    def create(self, validated_data):
+        user = self.context['request'].user
+        task = Task.objects.create(user=user, **validated_data)
+        return task
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -51,4 +57,4 @@ class TaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ['id', 'name', 'description', 'user', 'created_at']
+        fields = ['id', 'name', 'description', 'is_done', 'user', 'created_at']

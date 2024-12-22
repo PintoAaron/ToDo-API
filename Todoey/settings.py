@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'django_filters',
     'djoser',
     'core',
 
@@ -166,3 +167,38 @@ DJOSER = {
         'user': 'core.serializers.UserSerializer',
     },
 }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+    'formatters': {
+        'verbose': {
+            'format': '{asctime} ({levelname}) - {name} - {message}',
+            'style': '{',
+        }
+    }
+}
+
+
+EMAIL_HOST = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.getenv('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
+
+
+CELERY_BROKER_URL = 'redis://localhost:6379/1'
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
